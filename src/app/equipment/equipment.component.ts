@@ -1,3 +1,4 @@
+import { templateJitUrl } from '@angular/compiler';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -28,8 +29,18 @@ export class EquipmentComponent implements OnInit {
    ngOnInit() { }
 
   // Code your addItem function here:
-  addItem(selectedItem) {
+  addItem(selectedItem): boolean {
     this.cargoHold.push(selectedItem);
     this.cargoMass += selectedItem.mass;
+    if (this.cargoMass >= this.maximumAllowedMass) {
+      return;
+    }
   } 
+  emptyHold() {
+    this.cargoHold = [];
+    this.cargoMass = 0;
+  }
+  shouldDisable(item): boolean {
+    return this.cargoHold.length === this.maxItems || this.cargoMass + item.mass > this.maximumAllowedMass;
+  }
 }
